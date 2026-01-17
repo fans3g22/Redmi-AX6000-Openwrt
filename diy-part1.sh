@@ -1,39 +1,29 @@
 #!/bin/bash
-#
-# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
-#
-# This is free software, licensed under the MIT License.
-# See /LICENSE for more information.
-#
-# https://github.com/P3TERX/Actions-OpenWrt
-# File name: diy-part1.sh
-# Description: OpenWrt DIY script part 1 (Before Update feeds)
-#
 
-# Uncomment a feed source
-#sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
-
-# Add a feed source
-#echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
-#echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
-./scripts/feeds update -a && ./scripts/feeds install -a
-sed -i '$a src-git mosdns https://github.com/sbwml/luci-app-mosdns' feeds.conf.default
-sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
-sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
-
-echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
-# 添加 Nikki 插件源
+# 1. 添加所有自定义插件源 (统一放在一起)
+echo 'src-git mosdns https://github.com/sbwml/luci-app-mosdns' >> feeds.conf.default
+echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >> feeds.conf.default
+echo 'src-git small https://github.com/kenzok8/small' >> feeds.conf.default
+echo 'src-git helloworld https://github.com/fw876/helloworld' >> feeds.conf.default
 echo 'src-git nikki https://github.com/nikkinikki-org/OpenWrt-nikki' >> feeds.conf.default
-#echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
-./scripts/feeds update -a
-./scripts/feeds install -a -f -p kenzo
-./scripts/feeds install -a -f -p small
 
+# 2. 统一更新源并安装
+./scripts/feeds update -a
+./scripts/feeds install -a
+
+# 3. 处理特定的包冲突或替换
+# 先卸载旧的 mosdns 相关包
 ./scripts/feeds uninstall luci-app-mosdns mosdns v2ray-geodata
+# 重新从 mosdns 源安装
 ./scripts/feeds install -f -p mosdns mosdns luci-app-mosdns
+
+# 4. 物理替换 v2ray-geodata (如果需要特定版本)
+rm -rf package/v2ray-geodata
 find ./ -name v2ray-geodata | xargs rm -rf
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
-#svn export https://github.com/immortalwrt/luci/branches/openwrt-21.02/applications/luci-app-vlmcsd package/luci-app-vlmcsd
-#svn export https://github.com/immortalwrt/packages/branches/openwrt-21.02/net/vlmcsd  package/vlmcsd
-sed -i 's#../../luci.mk#$(TOPDIR)/feeds/luci/luci.mk#g' ./package/*/Makefile
-./scripts/feeds update -i && ./scripts/feeds install -a
+
+# 5. 修复 Makefile 路径 (如果确实有报错需要此操作再开启)
+# sed -i 's#../../luci.mk#$(TOPDIR)/feeds/luci/luci.mk#g' ./package/*/Makefile
+
+# 6. 最后确保所有包都已安装
+./scripts/feeds install -a
