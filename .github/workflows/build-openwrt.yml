@@ -52,10 +52,10 @@ jobs:
           echo 'src-git nikki https://github.com/nikkinikki-org/OpenWrt-nikki.git;main' >> feeds.conf.default
           echo 'src-git momo https://github.com/nikkinikki-org/OpenWrt-momo.git;main' >> feeds.conf.default
           # mosdns: DNS forwarding/forwarder
-          echo 'src-git mosdns https://github.com/sbwml/luci-app-mosdns.git;main' >> feeds.conf.default
+          echo 'src-git mosdns https://github.com/sbwml/luci-app-mosdns.git;v5' >> feeds.conf.default
           # kenzo / small: popular OpenWrt package collections
-          echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages.git;main' >> feeds.conf.default
-          echo 'src-git small https://github.com/kenzok8/small.git;main' >> feeds.conf.default
+          echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages.git;master' >> feeds.conf.default
+          echo 'src-git small https://github.com/kenzok8/small.git;master' >> feeds.conf.default
           # helloworld: SSR Plus+
           echo 'src-git helloworld https://github.com/fw876/helloworld.git;main' >> feeds.conf.default
 
