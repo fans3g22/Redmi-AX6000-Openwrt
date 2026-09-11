@@ -6,7 +6,7 @@ on:
       branch:
         description: 'ImmortalWrt branch/tag'
         required: true
-        default: 'master'
+        default: 'openwrt-25.12'
       target:
         description: 'OpenWrt target'
         required: true
