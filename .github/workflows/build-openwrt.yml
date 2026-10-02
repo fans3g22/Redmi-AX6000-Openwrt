@@ -7,21 +7,30 @@ on:
         description: 'ImmortalWrt branch/tag'
         required: true
         default: 'openwrt-25.12'
-      target:
-        description: 'OpenWrt target'
-        required: true
-        default: 'mediatek/filogic'
-      profile:
-        description: 'Device profile'
-        required: true
-        default: 'xiaomi_redmi-router-ax6000-stock'
+
+  repository_dispatch:
+    types: [source-code-update]
 
 env:
   TZ: Asia/Shanghai
+  DEFAULT_BRANCH: openwrt-25.12
 
 jobs:
   build:
     runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - layout: stock
+            config: .config
+            profile: xiaomi_redmi-router-ax6000-stock
+            artifact: immortalwrt-ax6000-stock
+          - layout: ubootmod
+            config: .config.ubootmod
+            profile: xiaomi_redmi-router-ax6000-ubootmod
+            artifact: immortalwrt-ax6000-ubootmod
+
     steps:
       - name: Checkout your config repo
         uses: actions/checkout@v4
@@ -32,7 +41,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: immortalwrt/immortalwrt
-          ref: ${{ github.event.inputs.branch }}
+          ref: ${{ github.event.inputs.branch || github.event.client_payload.branch || env.DEFAULT_BRANCH }}
           fetch-depth: 0
           path: immortalwrt
 
@@ -51,11 +60,14 @@ jobs:
           # nikki / momo: proxy plugins
           echo 'src-git nikki https://github.com/nikkinikki-org/OpenWrt-nikki.git;main' >> feeds.conf.default
           echo 'src-git momo https://github.com/nikkinikki-org/OpenWrt-momo.git;main' >> feeds.conf.default
-          # mosdns: DNS forwarding/forwarder
+
+          # mosdns v5: the LuCI app and mosdns source
           echo 'src-git mosdns https://github.com/sbwml/luci-app-mosdns.git;v5' >> feeds.conf.default
-          # kenzo / small: popular OpenWrt package collections
+
+          # kenzo / small: package collections
           echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages.git;master' >> feeds.conf.default
           echo 'src-git small https://github.com/kenzok8/small.git;master' >> feeds.conf.default
+
           # helloworld: SSR Plus+
           echo 'src-git helloworld https://github.com/fw876/helloworld.git;main' >> feeds.conf.default
 
@@ -65,26 +77,69 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-      - name: Copy .config and expand
+          # v5 mosdns feed must win over the duplicate copy in small
+          ./scripts/feeds uninstall mosdns luci-app-mosdns 2>/dev/null || true
+          ./scripts/feeds install -f -p mosdns mosdns luci-app-mosdns
+
+      - name: Copy ${{ matrix.layout }} config and expand
         working-directory: immortalwrt
         run: |
-          cp $GITHUB_WORKSPACE/config-repo/.config .config
+          cp "$GITHUB_WORKSPACE/config-repo/${{ matrix.config }}" .config
           make defconfig
+
+      - name: Verify selected profile
+        working-directory: immortalwrt
+        run: |
+          grep -E 'CONFIG_TARGET_(BOARD|SUBTARGET|PROFILE)|DEVICE_xiaomi_redmi-router-ax6000' .config || true
+          grep -q "CONFIG_TARGET_mediatek_filogic_DEVICE_${{ matrix.profile }}=y" .config
 
       - name: Download package sources
         working-directory: immortalwrt
         run: |
-          make download -j$(nproc)
+          make download -j"$(nproc)"
           find dl -size -1024c -exec ls -l {} \;
 
       - name: Compile firmware
         working-directory: immortalwrt
-        run: make -j$(nproc) V=s
+        run: make -j"$(nproc)" V=s
 
-      - name: Upload firmware artifacts
+      - name: Verify ${{ matrix.layout }} artifacts
+        working-directory: immortalwrt
+        run: |
+          set -e
+          if [ "${{ matrix.layout }}" = "ubootmod" ]; then
+            ls -lh bin/targets/mediatek/filogic/*ax6000-ubootmod*
+            for f in \
+              bin/targets/mediatek/filogic/*ax6000-ubootmod-preloader.bin \
+              bin/targets/mediatek/filogic/*ax6000-ubootmod-bl31-uboot.fip \
+              bin/targets/mediatek/filogic/*ax6000-ubootmod-initramfs-factory.ubi \
+              bin/targets/mediatek/filogic/*ax6000-ubootmod-initramfs-recovery.itb \
+              bin/targets/mediatek/filogic/*ax6000-ubootmod-squashfs-sysupgrade.itb; do
+              ls $f >/dev/null 2>&1 || { echo "Missing ubootmod artifact: $f"; exit 1; }
+            done
+          else
+            ls -lh bin/targets/mediatek/filogic/*ax6000-stock*
+            for f in \
+              bin/targets/mediatek/filogic/*ax6000-stock-initramfs-factory.ubi \
+              bin/targets/mediatek/filogic/*ax6000-stock-squashfs-sysupgrade.bin; do
+              ls $f >/dev/null 2>&1 || { echo "Missing stock artifact: $f"; exit 1; }
+            done
+          fi
+
+      - name: Upload ${{ matrix.layout }} firmware
         uses: actions/upload-artifact@v4
         with:
-          name: immortalwrt-ax6000-stock
+          name: ${{ matrix.artifact }}
           path: |
             immortalwrt/bin/targets/mediatek/filogic/
             !immortalwrt/bin/targets/mediatek/filogic/packages/
+
+      - name: Upload ${{ matrix.layout }} package repository
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}-packages
+          path: |
+            immortalwrt/bin/targets/mediatek/filogic/packages/
+            immortalwrt/bin/packages/aarch64_cortex-a53/
+          if-no-files-found: warn
+          retention-days: 7

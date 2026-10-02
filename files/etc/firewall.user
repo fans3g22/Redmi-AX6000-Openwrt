@@ -1,0 +1,2 @@
+# DHCP/RA guard: block optical modem DHCP and IPv6 RA on bridged ports
+[ -x /etc/firewall/dhcp_guard.sh ] && /etc/firewall/dhcp_guard.sh

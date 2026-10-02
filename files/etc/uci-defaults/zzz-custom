@@ -1,15 +1,40 @@
 #!/bin/sh
 
-#edit feeds
-sed -i 's/downloads.openwrt.org/mirrors.ustc.edu.cn\/openwrt/g' /etc/opkg/distfeeds.conf
-sed -i "/openwrt_kenzo/d" /etc/opkg/distfeeds.conf
-sed -i "/openwrt_mosdns/d" /etc/opkg/distfeeds.conf
-sed -i "/openwrt_small/d" /etc/opkg/distfeeds.conf
+# Package feeds
+# ImmortalWrt 25.12+ uses apk; 24.10 and older use opkg.  The third-party
+# feeds below are build-time source feeds and are not published on the
+# official download server, so remove those generated entries.  Keep the
+# official ImmortalWrt feed: OpenWrt and ImmortalWrt packages are not
+# interchangeable.
+if [ -f /etc/apk/repositories.d/distfeeds.list ]; then
+    sed -i -e '/kenzo/d' -e '/mosdns/d' -e '/small/d' \
+        -e '/nikki/d' -e '/momo/d' -e '/helloworld/d' -e '/video/d' \
+        /etc/apk/repositories.d/distfeeds.list
+    # If you host your own ABI-compatible package index, add it here:
+    # echo 'https://example.com/openwrt/packages/aarch64_cortex-a53/packages.adb' \
+    #     >> /etc/apk/repositories.d/customfeeds.list
+elif [ -f /etc/opkg/distfeeds.conf ]; then
+    sed -i -e '/kenzo/d' -e '/mosdns/d' -e '/small/d' \
+        -e '/nikki/d' -e '/momo/d' -e '/helloworld/d' -e '/video/d' \
+        /etc/opkg/distfeeds.conf
+fi
 #echo "mt7915e wed_enable=Y" >> /etc/modules.d/mt7915e
+
+# Make sure the copied DHCP/RA guard script is executable and loaded by fw4.
+chmod 0755 /etc/firewall/dhcp_guard.sh 2>/dev/null || true
+if ! uci -q get firewall.custom_rules >/dev/null 2>&1; then
+    uci add firewall include >/dev/null
+    uci rename firewall.@include[-1]='custom_rules'
+fi
+uci set firewall.custom_rules.type='script'
+uci set firewall.custom_rules.path='/etc/firewall.user'
+uci set firewall.custom_rules.fw4_compatible='1'
+uci set firewall.custom_rules.enabled='1'
+uci commit firewall
 
 [ "$(uci -q get system.@system[0].init)" != "" ] &&  exit 0
 #set lan ip
-uci set network.lan.ipaddr='10.0.0.1'
+uci set network.lan.ipaddr='192.168.71.80'
 uci commit network
 
 uci set system.@system[0].zonename='Asia/Shanghai'
