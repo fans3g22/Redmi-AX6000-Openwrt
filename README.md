@@ -1,44 +1,64 @@
-**English** | [中文](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
+# Redmi AX6000 / ImmortalWrt 可复现构建
 
-# Actions-OpenWrt
+本仓库按 2026-10-29 从在线路由器导出的配置和软件清单构建
+`Xiaomi Redmi Router AX6000 (stock layout)` 固件。
 
-[![LICENSE](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square&label=LICENSE)](https://github.com/P3TERX/Actions-OpenWrt/blob/master/LICENSE)
-![GitHub Stars](https://img.shields.io/github/stars/P3TERX/Actions-OpenWrt.svg?style=flat-square&label=Stars&logo=github)
-![GitHub Forks](https://img.shields.io/github/forks/P3TERX/Actions-OpenWrt.svg?style=flat-square&label=Forks&logo=github)
+## 当前设备基线
 
-A template for building OpenWrt with GitHub Actions
+- 固件：ImmortalWrt `25.12-SNAPSHOT`
+- 固件版本：`r38202-313718c25f`
+- ImmortalWrt 源码：`313718c25f206cdeee399bdc6c002b7388c9a513`
+- 内核：`6.12.108`
+- 平台和目标：`mediatek/filogic`
+- 设备布局：stock
+- 路由器 LAN：`192.168.71.80/24`
+- 上游网关：`192.168.71.1`
+- 已安装软件：295 个，完整版本清单在
+  [`manifests/installed-packages.tsv`](manifests/installed-packages.tsv)
 
-## Usage
+详细配置摘要见
+[`manifests/device-snapshot.md`](manifests/device-snapshot.md)。
 
-- Click the [Use this template](https://github.com/P3TERX/Actions-OpenWrt/generate) button to create a new repository.
-- Generate `.config` files using [Lean's OpenWrt](https://github.com/coolsnowwolf/lede) source code. ( You can change it through environment variables in the workflow file. )
-- Push `.config` file to the GitHub repository.
-- Select `Build OpenWrt` on the Actions page.
-- Click the `Run workflow` button.
-- When the build is complete, click the `Artifacts` button in the upper right corner of the Actions page to download the binaries.
+## 构建
 
-## Tips
+1. 在仓库 `Settings > Secrets and variables > Actions` 中创建名为
+   `ROUTER_CONFIG_ARCHIVE_PASSWORD` 的 secret。
+2. 打开 `Actions > Build ImmortalWrt for Redmi AX6000 > Run workflow`。
+3. 保持 `include_router_config=true`，下载
+   `immortalwrt-ax6000-stock-current-router` artifact。
+4. 在 LuCI 的“备份与更新”页面刷写
+   `*-squashfs-sysupgrade.bin`。首次使用 stock factory 映像前，应再次确认
+   当前 U-Boot 和分区布局。
 
-- It may take a long time to create a `.config` file and build the OpenWrt firmware. Thus, before create repository to build your own firmware, you may check out if others have already built it which meet your needs by simply [search `Actions-Openwrt` in GitHub](https://github.com/search?q=Actions-openwrt).
-- Add some meta info of your built firmware (such as firmware architecture and installed packages) to your repository introduction, this will save others' time.
+若只想验证软件选择、不注入私人配置，将 `include_router_config` 设为
+`false`。
 
-## Credits
+## 私人配置
 
-- [Microsoft Azure](https://azure.microsoft.com)
-- [GitHub Actions](https://github.com/features/actions)
-- [OpenWrt](https://github.com/openwrt/openwrt)
-- [Lean's OpenWrt](https://github.com/coolsnowwolf/lede)
-- [tmate](https://github.com/tmate-io/tmate)
-- [mxschmitt/action-tmate](https://github.com/mxschmitt/action-tmate)
-- [csexton/debugger-action](https://github.com/csexton/debugger-action)
-- [Cowtransfer](https://cowtransfer.com)
-- [WeTransfer](https://wetransfer.com/)
-- [Mikubill/transfer](https://github.com/Mikubill/transfer)
-- [softprops/action-gh-release](https://github.com/softprops/action-gh-release)
-- [ActionsRML/delete-workflow-runs](https://github.com/ActionsRML/delete-workflow-runs)
-- [dev-drprasad/delete-older-releases](https://github.com/dev-drprasad/delete-older-releases)
-- [peter-evans/repository-dispatch](https://github.com/peter-evans/repository-dispatch)
+路由器完整备份经过 AES-256/PBKDF2 加密后保存在：
 
-## License
+`configs/router-backup-2026-10-29.tar.enc`
 
-[MIT](https://github.com/P3TERX/Actions-OpenWrt/blob/main/LICENSE) © [**P3TERX**](https://p3terx.com)
+其中包含 Wi-Fi 密码、代理订阅/节点、root 密码哈希、SSH 主机密钥和其他
+个人凭据，因此不能删除加密或直接提交明文备份。构建时仅在 GitHub runner 的
+临时目录中解密，并覆盖到 OpenWrt 构建的 `files/` 目录。
+
+重新导出路由器备份后，可运行：
+
+```sh
+ROUTER_BACKUP=backup-ImmortalWrt-YYYY-MM-DD.tar \
+ROUTER_CONFIG_ARCHIVE_PASSWORD='secure-password' \
+./scripts/encrypt-router-backup.sh
+```
+
+[`files/`](files/) 中只保存可公开的辅助脚本。DMZ、防火墙、无线和代理设置
+来自加密快照。
+
+## 安全提示
+
+- 此仓库是公开仓库；GitHub Actions artifact 含刷入设备后可直接读取的个人
+  设置，请仅自己下载，不要公开分享固件。
+- 固件包含原设备的配置身份。若公开固件，应先移除
+  `/etc/shadow`、`/etc/dropbear/*_host_key`、无线密码和代理凭据。
+- 刷机前保留 `backup-ImmortalWrt-2026-10-29.tar` 和密文备份。
+- stock 与 ubootmod 的 U-Boot/分区布局不同，不能混刷。

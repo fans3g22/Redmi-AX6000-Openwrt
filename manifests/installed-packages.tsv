@@ -1,0 +1,296 @@
+package	version	size	description
+kmod-nf-ipt6	6.12.108-r1	8.97 KiB	Ip6tables core
+kmod-nf-log	6.12.108-r1	8.38 KiB	Netfilter Logging
+kmod-nf-log6	6.12.108-r1	643 B	Netfilter IPV6 Logging
+kmod-nf-nat	6.12.108-r1	15.51 KiB	Netfilter NAT
+kmod-nf-nat6	6.12.108-r1	655 B	Netfilter IPV6-NAT
+kmod-nf-nathelper	6.12.108-r1	6.19 KiB	Default Netfilter (IPv4) Conntrack and NAT helpers Includes: - ftp
+kmod-nf-reject	6.12.108-r1	4.12 KiB	Netfilter IPv4 reject support
+kmod-nf-reject6	6.12.108-r1	4.56 KiB	Netfilter IPv6 reject support
+kmod-nf-socket	6.12.108-r1	3.23 KiB	Netfilter socket lookup support
+kmod-nf-tproxy	6.12.108-r1	3.59 KiB	Netfilter tproxy support
+kmod-nfnetlink	6.12.108-r1	6.05 KiB	Kernel modules support for a netlink-based userspace interface
+kmod-nft-bridge	6.12.108-r1	6.11 KiB	Netfilter nf_tables bridge table support
+kmod-nft-compat	6.12.108-r1	5.50 KiB	Netfilter nf_tables compat support
+kmod-nft-core	6.12.108-r1	122.35 KiB	Kernel module support for nftables
+kmod-nft-fib	6.12.108-r1	6.68 KiB	Netfilter nf_tables fib support
+kmod-nft-fullcone	6.12.108.2023.05.17~07d93b62-r3	9.39 KiB	nftables fullcone expression support
+kmod-nft-nat	6.12.108-r1	5.15 KiB	Netfilter nf_tables NAT support
+kmod-nft-offload	6.12.108-r1	5.42 KiB	Netfilter nf_tables routing/NAT offload support
+kmod-nft-socket	6.12.108-r1	2.90 KiB	Netfilter nf_tables socket support
+kmod-nft-tproxy	6.12.108-r1	3.33 KiB	Netfilter nf_tables tproxy support
+kmod-ppp	6.12.108-r1	26.90 KiB	Kernel modules for PPP support
+kmod-pppoe	6.12.108-r1	8.58 KiB	Kernel module for PPPoE (PPP over Ethernet) support
+kmod-pppox	6.12.108-r1	2.59 KiB	Kernel helper module for PPPoE and PPTP support
+kmod-sched-act-vlan	6.12.108-r1	4.79 KiB	Allows to configure rules to push or pop vlan headers.
+kmod-sched-bpf	6.12.108-r1	9.29 KiB	Traffic shaper support for Berkeley Packet Filter
+kmod-sched-core	6.12.108-r1	66.89 KiB	Core kernel scheduler support for IP traffic
+kmod-sched-flower	6.12.108-r1	21.26 KiB	Allows to classify packets based on a configurable combination of packet keys and masks.
+kmod-slhc	6.12.108-r1	4.32 KiB	Serial Line Header Compression
+kmod-thermal	6.12.108-r1	717 B	Thermal driver offers a generic mechanism for thermal management. Usually it's made up of one or more thermal zone and cooling device.
+kmod-tun	6.12.108-r1	25.24 KiB	Kernel support for the TUN/TAP tunneling device
+libatomic1	14.3.0-r5	7.61 KiB	Atomic support library
+libblobmsg-json20260213	2026.06.19~7dd12784-r1	4.60 KiB	blobmsg <-> json conversion library
+libbpf1	1.6.2-r1	160.66 KiB	libbpf is a library for loading eBPF programs and reading and manipulating eBPF objects from user-space.
+libc	1.2.5-r5	290.33 KiB	C library
+libcap	2.69-r1	15.87 KiB	Linux capabilities library library
+libcap-ng	0.8.4-r2	8.76 KiB	POSIX capabilities library library
+libcurl4	8.19.0-r2	250.41 KiB	A client-side URL transfer library
+libelf1	0.192-r1	41.33 KiB	ELF manipulation libraries (libelf)
+libgcc1	14.3.0-r5	49.04 KiB	GCC support library
+libgmp10	6.3.0-r2	216.82 KiB	GMP is a free library for arbitrary precision arithmetic, operating on signed integers, rational numbers, and floating point numbers.
+libip4tc2	1.8.10-r3	11.30 KiB	IPv4 firewall - shared libiptc library
+libip6tc2	1.8.10-r3	11.52 KiB	IPv6 firewall - shared libiptc library
+libiptext-nft0	1.8.10-r3	3.39 KiB	IPv4/IPv6 firewall - shared libiptext nft library
+libiptext0	1.8.10-r3	35.19 KiB	IPv4 firewall - shared libiptext library
+libiptext6-0	1.8.10-r3	4.57 KiB	IPv6 firewall - shared libiptext library
+libiwinfo-data	2026.01.14~f5dd57a8-r1	3.67 KiB	libiwinfo Lua binding
+libiwinfo20230701	2026.01.14~f5dd57a8-r1	28.62 KiB	Wireless information library with simplified API for nl80211 and wext driver interfaces.
+libjson-c5	0.18-r1	32.13 KiB	This package contains a library for javascript object notation backends.
+libjson-script20260213	2026.06.19~7dd12784-r1	5.74 KiB	Minimalistic JSON based scripting engine
+libltdl7	2.5.4-r1	15.32 KiB	A generic dynamic object loading library
+liblua5.1.5	5.1.5-r11	73.93 KiB	Lua is a powerful light-weight programming language designed for extending applications. Lua is also frequently used as a general-purpose, stand-alone language. Lua is free software. This package contains the Lua shared libraries, needed by other programs.
+liblucihttp-lua	2023.03.15~9b5b683f-r1	3.80 KiB	Lua binding for the LuCI HTTP utility library
+liblucihttp-ucode	2023.03.15~9b5b683f-r1	4.31 KiB	ucode binding for the LuCI HTTP utility library
+liblucihttp0	2023.03.15~9b5b683f-r1	8.22 KiB	LuCI HTTP utility library
+libmbedtls21	3.6.7-r1	336.12 KiB	The aim of the mbedtls project is to provide a quality, open-source cryptographic library written in C and targeted at embedded systems. This package contains the mbedtls library.
+libmnl0	1.0.5-r1	8.01 KiB	libmnl is a minimalistic user-space library oriented to Netlink developers. There are a lot of common tasks in parsing, validating, constructing of both the Netlink header and TLVs that are repetitive and easy to get wrong. This library aims to provide simple helpers that allows you to re-use code and to avoid re-inventing the wheel. The main features of this library are: . * Small: the shared library requires around 30KB for an x86-based computer. . * Simple: this library avoids complexity and elaborated a
+libncurses6	6.4-r3	173.65 KiB	Terminal handling library (Unicode)
+libnetfilter-conntrack3	1.1.0-r1	39.08 KiB	libnetfilter_conntrack is a userspace library providing a programming interface (API) to the in-kernel connection tracking state table. The library libnetfilter_conntrack has been previously known as libnfnetlink_conntrack and libctnetlink. This library is currently used by conntrack-tools among many other applications.
+libnettle8	3.10.2-r1	347.87 KiB	GNU crypto library
+libnfnetlink0	1.0.2-r1	10.81 KiB	libnfnetlink is is the low-level library for netfilter related kernel/userspace communication. It provides a generic messaging infrastructure for in-kernel netfilter subsystems (such as nfnetlink_log, nfnetlink_queue, nfnetlink_conntrack) and their respective users and/or management tools in userspace.
+libnftnl11	1.3.1-r1	62.86 KiB	libnftnl is a userspace library providing a low-level netlink programming interface (API) to the in-kernel nf_tables subsystem.
+libnghttp2-14	1.70.0-r1	67.94 KiB	HTTP/2 C Library
+libnl-tiny1	2025.12.02~40493a65-r1	16.62 KiB	This package contains a stripped down version of libnl
+libopenssl3	3.5.8-r2	2.26 MiB	The OpenSSL Project is a collaborative effort to develop a robust, commercial-grade, full-featured, and Open Source toolkit implementing the Transport Layer Security (TLS) protocol as well as a full-strength general-purpose cryptography library. This package contains the OpenSSL shared libraries, needed by other programs.
+libpcap1	1.10.6-r1	117.90 KiB	This package contains a system-independent library for user-level network packet capture.
+libpcre2	10.47-r1	198.78 KiB	A Perl Compatible Regular Expression library
+libpthread	1.2.5-r5	646 B	POSIX thread library
+librrd1	1.0.50-r7	136.01 KiB	RRD is the Acronym for Round Robin Database. RRD is a system to store and display time-series data (i.e. network bandwidth, machine-room temperature, server load average). It stores the data in a very compact way that will not expand over time, and it presents useful graphs by processing the data to enforce a certain data density. It can be used either via simple wrapper scripts (from shell or Perl) or via frontends that poll network devices and put friendly user interface on it. This is version 1.0.x with
+librt	1.2.5-r5	657 B	POSIX.1b RealTime extension library
+libstdcpp6	14.3.0-r5	628.39 KiB	GNU Standard C++ Library v3
+libubox20260213	2026.06.19~7dd12784-r1	32.13 KiB	Basic utility library
+libubus-lua	2026.06.28~24864e78-r2	7.54 KiB	Lua binding for the OpenWrt RPC client
+libubus20251202	2026.06.28~24864e78-r2	12.68 KiB	OpenWrt RPC client library
+libuci20250120	2025.12.02~66127cd7-r1	19.11 KiB	C library for the Unified Configuration Interface (UCI)
+libuclient20201210	2026.06.07~daad21fa-r1	12.07 KiB	HTTP/1.1 client library
+libucode20230711	2026.01.16~85922056-r2	77.72 KiB	The libucode package provides the shared runtime library for the ucode interpreter.
+libudebug	2026.01.16~875e1a7a	4.85 KiB	udebug client library
+liburcu	0.15.5-r1	78.92 KiB	Userspace Read-Copy-Update library.
+libustream-mbedtls20201210	2026.03.01~99f1c0db-r1	6.40 KiB	ustream SSL Library (mbedtls)
+libustream-openssl20201210	2026.03.01~99f1c0db-r1	6.08 KiB	ustream SSL Library (openssl)
+libuuid1	2.41.5-r1	14.39 KiB	The UUID library is used to generate unique identifiers for objects that may be accessible beyond the local system. This library generates UUIDs compatible with those created by the Open Software Foundation (OSF) Distributed Computing Environment (DCE) utility.
+libuv1	1.48.0-r1	73.98 KiB	libuv is a multi-platform support library with a focus on asynchronous I/O. It was primarily developed for use by Node.js, but it's also used by Luvit, Julia, pyuv, and others.
+libwebsockets-full	4.4.1-r1	266.87 KiB	libwebsockets (Full - OpenSSL, libuv, plugins, CGI)
+libxtables12	1.8.10-r3	23.11 KiB	IPv4/IPv6 firewall - shared xtables library
+logd	2025.10.30~6f78fa49-r1	12.54 KiB	OpenWrt system log implementation
+lua	5.1.5-r11	5.48 KiB	Lua is a powerful light-weight programming language designed for extending applications. Lua is also frequently used as a general-purpose, stand-alone language. Lua is free software. This package contains the Lua language interpreter.
+luci	26.249.28459~d6167ea	782 B	Standard OpenWrt set including package management and attended sysupgrades support
+luci-app-firewall	26.249.28459~d6167ea	18.31 KiB	Firewall and port forwarding application
+luci-app-momo	1.2.1-r1	8.15 KiB	LuCI Support for momo
+luci-app-package-manager	26.249.28459~d6167ea	10.69 KiB	Package management application
+luci-app-statistics	26.236.50544~cb5d434	39.86 KiB	LuCI Statistics Application
+luci-app-ttyd	26.249.28459~d6167ea	2.92 KiB	ttyd - Command-line tool for sharing terminal over the web
+luci-app-upnp	26.249.28459~d6167ea	5.29 KiB	UPnP IGD & PCP/NAT-PMP configuration module | Universal Plug and Play
+luci-app-usteer	26.249.28459~d6167ea	7.60 KiB	LuCI usteer app for js based luci
+luci-base	26.249.28459~d6167ea	152.89 KiB	LuCI core runtime
+luci-i18n-base-zh-cn	26.249.28459~d6167ea	64.08 KiB	Translation for luci-base - 简体中文 (Simplified Chinese)
+luci-i18n-firewall-zh-cn	26.249.28459~d6167ea	8.35 KiB	Translation for luci-app-firewall - 简体中文 (Simplified Chinese)
+luci-i18n-momo-zh-cn	26.229.27092~72f5c46	3.19 KiB	Translation for luci-app-momo - 简体中文 (Simplified Chinese)
+luci-i18n-package-manager-zh-cn	26.249.28459~d6167ea	2.93 KiB	Translation for luci-app-package-manager - 简体中文 (Simplified Chinese)
+luci-i18n-statistics-zh-cn	26.236.50544~cb5d434	9.92 KiB	Translation for luci-app-statistics - 简体中文 (Simplified Chinese)
+luci-i18n-ttyd-zh-cn	26.249.28459~d6167ea	2.37 KiB	Translation for luci-app-ttyd - 简体中文 (Simplified Chinese)
+luci-i18n-upnp-zh-cn	26.249.28459~d6167ea	2.35 KiB	Translation for luci-app-upnp - 简体中文 (Simplified Chinese)
+luci-i18n-usteer-zh-cn	26.249.28459~d6167ea	4.66 KiB	Translation for luci-app-usteer - 简体中文 (Simplified Chinese)
+luci-lib-base	26.249.28459~d6167ea	10.22 KiB	basic libraries for luci
+luci-lib-ip	26.249.28459~d6167ea	12.23 KiB	Lua library for IP calculation and routing information
+luci-lib-jsonc	26.249.28459~d6167ea	4.81 KiB	Lua binding for JSON-C
+luci-lib-nixio	26.249.28459~d6167ea	32.61 KiB	NIXIO POSIX library
+luci-lib-uqr	26.249.28459~d6167ea	5.32 KiB	µQR - micro QR: SVG QRcode generator JS library
+luci-light	26.249.28459~d6167ea	878 B	Light OpenWrt set including admin support and the default Bootstrap theme
+luci-lua-runtime	26.249.28459~d6167ea	30.46 KiB	LuCI Lua runtime libraries
+luci-mod-admin-full	26.249.28459~d6167ea	799 B	LuCI Administration - full-featured for full control
+luci-mod-network	26.249.28459~d6167ea	72.58 KiB	LuCI Network Administration
+luci-mod-status	26.249.28459~d6167ea	45.16 KiB	LuCI Status Pages
+luci-mod-system	26.249.28459~d6167ea	20.93 KiB	LuCI Administration - Global System Settings
+luci-nginx	26.249.28459~d6167ea	923 B	Standard OpenWrt set including full admin with ppp support and the default Bootstrap theme
+luci-proto-ipv6	26.249.28459~d6167ea	4.15 KiB	Support for DHCPv6/6in4/6to4/6rd/DS-Lite/IPIP6
+luci-proto-ppp	26.249.28459~d6167ea	3.22 KiB	Support for PPP/PPPoE/PPPoA/PPtP
+luci-ssl	26.249.28459~d6167ea	808 B	LuCI with HTTPS support (mbedtls as SSL backend)
+luci-theme-bootstrap	26.249.28459~d6167ea	18.92 KiB	Bootstrap Theme (default)
+luci-theme-openwrt	26.249.28459~d6167ea	10.72 KiB	LuCI OpenWrt.org theme
+mihomo	1.19.32-r1	19.63 MiB	Another Mihomo Kernel.
+miniupnpd-nftables	2.3.9-r1	83.39 KiB	Lightweight UPnP IGD & PCP/NAT-PMP daemon (nftables)
+momo	2026.06.03-r1	48.44 KiB	Transparent Proxy with sing-box on OpenWrt.
+mosdns	5.3.4-r14	5.62 MiB	A plug-in DNS forwarder/splitter
+mt7986-wo-firmware	20260221-r1	105.08 KiB	MT7986 offload firmware
+mtd	27	12.55 KiB	This package contains an utility useful to upgrade from other firmware or older OpenWrt releases.
+nano	9.2-r1	76.85 KiB	Nano is a small and simple text editor for use on the terminal. Nano started as an enhanced clone of the Pico text editor. Nowadays Nano wants to be a generally useful editor with sensible defaults (linewise scrolling, no automatic line breaking). Nano is an official GNU package.
+netifd	2026.02.26~cbb83a18-r2	116.98 KiB	OpenWrt Network Interface Configuration Daemon
+nftables-json	1.1.6-r2	318.62 KiB	nftables userspace utility with JSON support
+nginx-mod-luci	1.26.3-r4	1.60 KiB	Support file for LuCI in nginx. Include custom nginx configuration, autostart script for uwsgi.
+nginx-mod-ubus	1.26.3-r4	8.76 KiB	Enable UBUS api support directly from the server.
+nginx-ssl	1.26.3-r4	370.83 KiB	nginx is an HTTP and reverse proxy server, as well as a mail proxy server, written by Igor Sysoev. This variant is compiled with SSL support enabled. To enable additional module select them in the nginx default configuration menu.
+nginx-ssl-util	1.7-r2	54.27 KiB	Utility that builds dynamically LAN listen directives for Nginx. Furthermore, it manages SSL directives for its server parts and can create corresponding (self-signed) certificates. It uses the PCRE library for performance.
+odhcp6c	2026.06.20~07d324ee-r3	40.48 KiB	Embedded DHCPv6-client for OpenWrt
+odhcpd-ipv6only	2026.06.29~5d7be43f-r1	54.95 KiB	odhcpd is a daemon for serving and relaying IP management protocols to configure clients and downstream routers. It tries to follow the RFC 6204 requirements for IPv6 home routers. This is a variant with support for RA and DHCPv6. It can also be used to relay RA, DHCPv6 and NDP messages between routed (non-bridged) interfaces in case no delegated prefixes are available.
+openssh-sftp-server	10.3_p1-r1	60.02 KiB	OpenSSH SFTP server.
+openwrt-keyring	2025.12.11~14e1f88b-r1	1.11 KiB	The keyring of with the developer using and gpg public keys.
+ppp	2.5.2-r4	142.11 KiB	This package contains the PPP (Point-to-Point Protocol) daemon.
+ppp-mod-pppoe	2.5.2-r4	12.88 KiB	This package contains a PPPoE (PPP over Ethernet) plugin for ppp.
+procd	2026.03.13~58eb263d-r1	58.92 KiB	OpenWrt system process manager
+procd-seccomp	2026.03.13~58eb263d-r1	13.56 KiB	OpenWrt process seccomp helper + utrace
+procd-ujail	2026.03.13~58eb263d-r1	41.14 KiB	OpenWrt process jail helper
+px5g-mbedtls	11	5.80 KiB	Px5g is a tiny standalone X.509 certificate generator. It suitable to create key files and certificates in DER and PEM format for use with stunnel, uhttpd and others.
+resolveip	2	2.38 KiB	This package contains the small resolveip utility which can be used by scripts to turn host names into numeric IP addresses. It supports IPv4 and IPv6 resolving and has a configurable timeout to guarantee a certain maximum runtime in case of slow or defunct DNS servers.
+rpcd	2026.07.19~e37ed9d8-r1	26.81 KiB	This package provides the UBUS RPC backend server to expose various functionality to frontend programs via JSON-RPC.
+rpcd-mod-file	2026.07.19~e37ed9d8-r1	8.90 KiB	Provides ubus calls for file and directory operations.
+rpcd-mod-iwinfo	2026.07.19~e37ed9d8-r1	8.09 KiB	Provides ubus calls for accessing iwinfo data.
+rpcd-mod-luci	20240305-r1	15.15 KiB	Provides LuCI backend ubus RPC operations.
+rpcd-mod-rpcsys	2026.07.19~e37ed9d8-r1	4.69 KiB	Provides ubus calls for sysupgrade and password changing.
+rpcd-mod-rrdns	20170710	4.47 KiB	Provides rapid mass reverse DNS lookup functionality.
+rpcd-mod-ucode	2026.07.19~e37ed9d8-r1	8.52 KiB	Allows implementing plugins using ucode scripts.
+rrdtool1	1.0.50-r7	11.11 KiB	RRD is the Acronym for Round Robin Database. RRD is a system to store and display time-series data (i.e. network bandwidth, machine-room temperature, server load average). It stores the data in a very compact way that will not expand over time, and it presents useful graphs by processing the data to enforce a certain data density. It can be used either via simple wrapper scripts (from shell or Perl) or via frontends that poll network devices and put friendly user interface on it. This is version 1.0.x with
+shellsync	0.2-r2	2.58 KiB	A tool to sync different shell scripts.Based on syncppp patch by morfast.
+sing-box	1.12.25-r1	14.27 MiB	Sing-box is a universal proxy platform which supports hysteria, SOCKS, Shadowsocks, ShadowTLS, Tor, trojan, VLess, VMess, WireGuard and so on.
+tcpdump-mini	4.99.6-r1	158.27 KiB	Network monitoring and data acquisition tool (minimal version)
+terminfo	6.4-r3	9.20 KiB	Terminal Info Database (ncurses)
+ttyd	1.7.7-r1	401.81 KiB	ttyd is a command-line tool for sharing terminal over the web.
+ubi-utils	2.3.0-r1	86.67 KiB	Utilities for manipulating memory technology devices.
+uboot-envtools	2025.10-r2	17.04 KiB	This package includes tools to read and modify U-Boot bootloader environment.
+ubox	2025.10.30~6f78fa49-r1	18.69 KiB	OpenWrt system helper toolbox
+ubus	2026.06.28~24864e78-r2	6.77 KiB	OpenWrt RPC client utility
+ubusd	2026.06.28~24864e78-r2	14.42 KiB	OpenWrt RPC daemon
+uci	2025.12.02~66127cd7-r1	7.46 KiB	Utility for the Unified Configuration Interface (UCI)
+uclient-fetch	2026.06.07~daad21fa-r1	8.86 KiB	Tiny wget replacement using libuclient
+ucode	2026.01.16~85922056-r2	7.17 KiB	ucode is a tiny script interpreter featuring an ECMAScript oriented script language and Jinja-inspired templating.
+ucode-mod-digest	2026.01.16~85922056-r2	16.53 KiB	The digest module allows ucode scripts to use libmd digests.
+ucode-mod-fs	2026.01.16~85922056-r2	11.94 KiB	The filesystem plugin module allows interaction with the local file system.
+ucode-mod-html	1	22.15 KiB	ucode HTML utility library
+ucode-mod-log	2026.01.16~85922056-r2	4.66 KiB	The log plugin module provides access to the syslog and libubox ulog APIs.
+ucode-mod-lua	1	9.32 KiB	ucode to Lua bridge library
+ucode-mod-math	2026.01.16~85922056-r2	3.19 KiB	The math plugin provides access to various <math.h> procedures.
+ucode-mod-nl80211	2026.01.16~85922056-r2	20.88 KiB	The nl80211 plugin provides access to the Linux wireless 802.11 netlink API.
+ucode-mod-rtnl	2026.01.16~85922056-r2	25.25 KiB	The rtnl plugin provides access to the Linux routing netlink API.
+ucode-mod-ubus	2026.01.16~85922056-r2	18.21 KiB	The ubus module allows ucode template scripts to enumerate and invoke ubus procedures.
+ucode-mod-uci	2026.01.16~85922056-r2	8.43 KiB	The uci module allows templates to read and modify uci configuration.
+ucode-mod-uloop	2026.01.16~85922056-r2	9.67 KiB	The uloop module allows ucode scripts to interact with OpenWrt uloop event loop implementation.
+uhttpd	2026.06.16~7b1bec45-r1	30.82 KiB	uHTTPd is a tiny single threaded HTTP server with TLS, CGI and Lua support. It is intended as a drop-in replacement for the Busybox HTTP daemon.
+uhttpd-mod-ubus	2026.06.16~7b1bec45-r1	8.91 KiB	The ubus plugin adds a HTTP/JSON RPC proxy for ubus and publishes the session.* namespace and procedures.
+urandom-seed	3	1.39 KiB	/etc/urandom.seed handling for OpenWrt
+urngd	2025.10.03~f17e33d9-r1	8.20 KiB	urngd is OpenWrt's micro non-physical true random number generator based on timing jitter. Using the Jitter RNG core, the rngd provides an entropy source that feeds into the Linux /dev/random device if its entropy runs low. It updates the /dev/random entropy estimator such that the newly provided entropy unblocks /dev/random. The seeding of /dev/random also ensures that /dev/urandom benefits from entropy. Especially during boot time, when the entropy of Linux is low, the Jitter RNGd provides a source of suf
+usign	2025.10.03~c4c72b1b-r1	10.68 KiB	OpenWrt signature verification utility
+usteer	2025.10.04~1d6524c6-r1	32.28 KiB	OpenWrt AP roaming assist daemon
+uwsgi	2.0.30-r1	307.43 KiB	The uWSGI project (to be used together with nginx or nginx-ssl).
+uwsgi-cgi-plugin	2.0.30-r1	9.21 KiB	The CGI plugin for the uWSGI project.
+uwsgi-luci-support	2.0.30-r1	1.88 KiB	Support files for LuCI on Nginx
+uwsgi-syslog-plugin	2.0.30-r1	2.16 KiB	The Syslog plugin for the uWSGI project.
+v2ray-geoip	202607171233-r1	4.23 MiB	GeoIP List for V2Ray
+wget-ssl	1.25.0-r3	213.42 KiB	Wget is a network utility to retrieve files from the Web using http and ftp, the two most widely used Internet protocols. It works non-interactively, so it will work in the background, after having logged off. The program supports recursive retrieval of web-authoring pages as well as ftp sites -- you can use wget to make mirrors of archives and home pages or to travel the Web like a WWW robot. This package is built with SSL support.
+wifi-scripts	1.0-r1	68.76 KiB	A set of scripts that handle setup and configuration of Wi-Fi devices.
+wireless-regdb	2026.05.30-r1	3.25 KiB	Wireless Regulatory Database
+wpa-supplicant	2025.08.26~ca266cc2-r2	476.29 KiB	WPA Supplicant (built-in full)
+xtables-legacy	1.8.10-r3	25.27 KiB	IP firewall administration tool
+xtables-nft	1.8.10-r3	77.28 KiB	IP firewall administration tool nft
+yq	4.53.6-r1	4.69 MiB	The aim of the project is to be the jq or sed of yaml files.
+zlib	1.3.1-r1	35.58 KiB	zlib is a lossless data-compression library. This package includes the shared library.
+3proxy	0.9.5-r5	97.90 KiB	3Proxy tiny free proxy server is really tiny cross-platform (Win32/Win64&Unix) freeware proxy servers set. It includes HTTP proxy with HTTPS and FTP support, SOCKSv4/SOCKSv4.5/SOCKSv5 proxy (socks/socks.exe), POP3 proxy, SMTP proxy, AIM/ICQ proxy (icqpr/icqpr.exe), MSN messenger / Live messenger proxy (msnpr/msnpr.exe), FTP proxy, caching DNS proxy, TCP and UDP portmappers. You can use every proxy as a standalone program (socks, proxy, tcppm, udppm, pop3p) or use combined program (3proxy). Combined proxy ad
+apk-openssl	3.0.5-r3	123.61 KiB	apk package manager (openssl)
+autocore	42	2.09 KiB	auto core loadbalance script.
+base-files	1954~313718c25f	72.73 KiB	This package contains a base filesystem and system scripts for OpenWrt.
+bind-dig	9.20.26-r1	53.61 KiB	bind DNS excavation tool
+bind-libs	9.20.26-r1	1.20 MiB	bind shared libraries
+block-mount	2026.05.23~16718b6e-r1	30.54 KiB	Block device mounting and checking
+bridger	2025.10.23~9fc2bc3e	20.16 KiB	Bridge forwarding accelerator
+busybox	1.37.0-r6	233.97 KiB	The Swiss Army Knife of embedded Linux. It slices, it dices, it makes Julian Fries.
+ca-bundle	20260816-r1	104.82 KiB	System CA certificates as a bundle
+cgi-io	2026.07.21~31cb3c89-r1	9.92 KiB	This package contains an cgi utility that is useful for up/downloading files
+collectd	5.12.0-r56	93.96 KiB	collectd is a small daemon which collects system information periodically and provides mechanismns to store the values in a variety of ways.
+collectd-mod-cpu	5.12.0-r56	4.48 KiB	CPU input plugin
+collectd-mod-interface	5.12.0-r56	4.28 KiB	network interfaces input plugin
+collectd-mod-iwinfo	5.12.0-r56	4.47 KiB	libiwinfo wireless statistics plugin
+collectd-mod-load	5.12.0-r56	2.61 KiB	system load input plugin
+collectd-mod-memory	5.12.0-r56	3.23 KiB	physical memory usage input plugin
+collectd-mod-network	5.12.0-r56	15.49 KiB	network input/output plugin
+collectd-mod-rrdtool	5.12.0-r56	11.56 KiB	RRDtool output plugin
+curl	8.19.0-r2	72.71 KiB	A client-side URL transfer utility
+default-settings	29	1.02 KiB	LuCI support for Default Settings
+default-settings-chn	29	1.10 KiB	LuCI support for Default Settings (Optimize for CHN users)
+dnsmasq-full	2.93-r1	209.75 KiB	It is intended to provide coupled DNS and DHCP service to a LAN. This is a fully configurable variant with DHCPv4, DHCPv6, DNSSEC, Authoritative DNS and nftset, Conntrack support & NO_ID enabled by default.
+dropbear	2025.89-r3	123.58 KiB	A small SSH2 server/client designed for small memory environments.
+eip197-mini-firmware	20260221-r1	1.00 KiB	Inside Secure EIP197 mini firmware
+firewall4	2025.03.17~b6e51575-r2	30.73 KiB	This package provides an nftables-based implementation of the UCI firewall sharing the same configuration format.
+fit-check-sign	2025.10-r2	89.30 KiB	fit_check_sign validates uImage.FIT hashes and signatures
+fitblk	2	2.60 KiB	Release uImage.FIT block devices using ioctl.
+fstools	2026.05.23~16718b6e-r1	20.85 KiB	OpenWrt filesystem tools
+fwtool	2025.10.03~04cd252e-r1	4.47 KiB	Utility for appending and extracting firmware metadata and signatures
+getrandom	2025.10.30~6f78fa49-r1	2.10 KiB	OpenWrt getrandom system helper
+hostapd	2025.08.26~ca266cc2-r2	480.19 KiB	This package contains a full featured IEEE 802.1x/WPA/EAP/RADIUS Authenticator.
+hostapd-common	2025.08.26~ca266cc2-r2	1.68 KiB	hostapd/wpa_supplicant common support files
+htop	3.5.1-r1	127.12 KiB	Htop is an ncursed-based process viewer similar to top, but it allows to scroll the list vertically and horizontally to see all processes and their full command lines.
+ip-full	6.18.0-r2	234.03 KiB	Routing control utility (full)
+ip6tables-extra	1.8.10-r3	11.62 KiB	iptables header matching modules for IPv6
+ip6tables-mod-nat	1.8.10-r3	2.22 KiB	iptables extensions for IPv6-NAT targets.
+ip6tables-nft	1.8.10-r3	825 B	Extra ip6tables nftables nft binaries. ip6tables-nft ip6tables-nft-restore ip6tables-nft-save ip6tables-translate ip6tables-restore-translate
+iw	6.17-r1	55.67 KiB	cfg80211 interface configuration utility
+jansson4	2.14.1-r1	47.94 KiB	Jansson is a C library for encoding, decoding and manipulating JSON data
+jq	1.8.1-r2	141.33 KiB	Lightweight and flexible command-line JSON processor. This package was compiled without ONIGURUMA regex library. match/test/sub and related functions are not available.
+jshn	2026.06.19~7dd12784-r1	7.28 KiB	Library for parsing and generating JSON from shell scripts
+jsonfilter	2026.03.16~b9034210-r1	10.77 KiB	OpenWrt JSON filter utility
+kernel	6.12.108~05f6e815…-r1	4.57 KiB	Virtual kernel package
+kmod-cfg80211	6.12.108.6.18.39-r1	182.02 KiB	cfg80211 is the Linux wireless LAN (802.11) configuration API.
+kmod-crypto-aead	6.12.108-r1	827 B	CryptoAPI AEAD support
+kmod-crypto-arc4	6.12.108-r1	1.93 KiB	ARC4 cipher CryptoAPI module
+kmod-crypto-authenc	6.12.108-r1	5.76 KiB	Combined mode wrapper for IPsec
+kmod-crypto-ccm	6.12.108-r1	796 B	Support for Counter with CBC MAC (CCM)
+kmod-crypto-cmac	6.12.108-r1	794 B	Support for Cipher-based Message Authentication Code (CMAC)
+kmod-crypto-crc32c	6.12.108-r1	827 B	CRC32c CRC module
+kmod-crypto-ctr	6.12.108-r1	791 B	Counter Mode CryptoAPI module
+kmod-crypto-des	6.12.108-r1	9.77 KiB	DES/3DES cipher CryptoAPI module
+kmod-crypto-ecb	6.12.108-r1	772 B	Electronic CodeBook CryptoAPI module
+kmod-crypto-gcm	6.12.108-r1	796 B	GCM/GMAC CryptoAPI module
+kmod-crypto-geniv	6.12.108-r1	2.40 KiB	CryptoAPI Shared IV generator
+kmod-crypto-gf128	6.12.108-r1	778 B	GF(2^128) multiplication functions CryptoAPI module
+kmod-crypto-ghash	6.12.108-r1	795 B	GHASH digest CryptoAPI module
+kmod-crypto-hash	6.12.108-r1	813 B	CryptoAPI hash support
+kmod-crypto-hmac	6.12.108-r1	787 B	HMAC digest CryptoAPI module
+kmod-crypto-hw-safexcel	6.12.108-r1	36.60 KiB	MVEBU's EIP97 and EIP197 Cryptographic Engine driver designed by Inside Secure. This is found on Marvell Armada 37xx/7k/8k SoCs. Particular version of these IP (EIP197B and EIP197D) require firmware. The mini firmware package provides limited functionality, for most operations a full-featured firmware is required. Unfortunately the "full" firmware is not freely available and needs signed Non-Disclosure Agreement (NDA) with Marvell. For those who have signed NDA the firmware can be obtained at https://extran
+kmod-crypto-manager	6.12.108-r1	837 B	CryptoAPI algorithm manager
+kmod-crypto-md5	6.12.108-r1	4.47 KiB	MD5 digest CryptoAPI module
+kmod-crypto-null	6.12.108-r1	765 B	Null CryptoAPI module
+kmod-crypto-rng	6.12.108-r1	827 B	CryptoAPI random number generation
+kmod-crypto-seqiv	6.12.108-r1	2.54 KiB	CryptoAPI Sequence Number IV Generator
+kmod-crypto-sha1	6.12.108-r1	5.08 KiB	SHA1 digest CryptoAPI module
+kmod-crypto-sha256	6.12.108-r1	799 B	SHA224 SHA256 digest CryptoAPI module
+kmod-crypto-sha3	6.12.108-r1	773 B	SHA3 digest CryptoAPI module
+kmod-crypto-sha512	6.12.108-r1	5.75 KiB	SHA512 digest CryptoAPI module
+kmod-crypto-user	6.12.108-r1	19.67 KiB	CryptoAPI userspace interface
+kmod-dummy	6.12.108-r1	2.79 KiB	The dummy network device
+kmod-gpio-button-hotplug	6.12.108-r5	6.45 KiB	This is a replacement for the following in-kernel drivers: 1) gpio_keys (KEYBOARD_GPIO) 2) gpio_keys_polled (KEYBOARD_GPIO_POLLED) Instead of generating input events (like in-kernel drivers do) it generates uevent-s and broadcasts them. This allows disabling input subsystem which is an overkill for OpenWrt simple needs.
+kmod-hwmon-core	6.12.108-r1	663 B	Kernel modules for hardware monitoring
+kmod-i2c-core	6.12.108-r1	755 B	Kernel modules for I2C support
+kmod-inet-diag	6.12.108-r1	13.24 KiB	Support for INET (TCP, DCCP, etc) socket monitoring interface used by native Linux tools such as ss.
+kmod-ip6tables	6.12.108-r1	3.96 KiB	Netfilter IPv6 firewalling support
+kmod-ip6tables-extra	6.12.108-r1	5.74 KiB	Netfilter IPv6 extra header matching modules
+kmod-ipt-conntrack	6.12.108-r1	5.61 KiB	Netfilter (IPv4) kernel modules for connection tracking Includes: - conntrack - defrag - iptables_raw - NOTRACK - state
+kmod-ipt-core	6.12.108-r1	12.94 KiB	Netfilter core kernel modules Includes: - comment - limit - LOG - mac - multiport - REJECT - TCPMSS
+kmod-ipt-nat	6.12.108-r1	5.02 KiB	Netfilter (IPv4) kernel modules for basic NAT targets Includes: - MASQUERADE
+kmod-ipt-nat6	6.12.108-r1	4.08 KiB	Netfilter (IPv6) kernel modules for NAT targets
+kmod-leds-gpio	6.12.108-r1	3.66 KiB	Kernel module for LEDs on GPIO lines
+kmod-leds-ws2812b	6.12.108-r1	3.32 KiB	LED support for driving WS2812B (NeoPixel) using SPI MOSI.
+kmod-lib-crc-ccitt	6.12.108-r1	759 B	Kernel module for CRC-CCITT support
+kmod-lib-crc32c	6.12.108-r1	1.87 KiB	Kernel module for CRC32 support
+kmod-mac80211	6.12.108.6.18.39-r1	359.25 KiB	Generic IEEE 802.11 Networking Stack (mac80211)
+kmod-macvlan	6.12.108-r1	10.79 KiB	A kernel module which allows one to create virtual interfaces that map packets to or from specific MAC addresses to a particular interface
+kmod-mppe	6.12.108-r1	4.49 KiB	Kernel modules for Microsoft PPP compression/encryption
+kmod-mt76-connac	6.12.108.2026.03.19~39c960c3-r2	28.51 KiB	MediaTek MT7615/MT79xx wireless driver common code
+kmod-mt76-core	6.12.108.2026.03.19~39c960c3-r2	46.06 KiB	MediaTek MT76xx wireless driver
+kmod-mt7915e	6.12.108.2026.03.19~39c960c3-r2	75.04 KiB	MediaTek MT7915e wireless driver
+kmod-mt7986-firmware	6.12.108.2026.03.19~39c960c3-r2	1.19 MiB	MediaTek MT7986 firmware
+kmod-mtd-rw	6.12.108.2021.02.28~e8776739-r1	2.07 KiB	A kernel module that temporarily makes all MTD partitions writeable.
+kmod-netlink-diag	6.12.108-r1	3.13 KiB	Netlink diag is a module made for use with iproute2's ss utility
+kmod-nf-conntrack	6.12.108-r1	54.38 KiB	Netfilter connection tracking
+kmod-nf-conntrack-netlink	6.12.108-r1	16.29 KiB	Kernel modules support for a netlink-based connection tracking userspace interface
+kmod-nf-conntrack6	6.12.108-r1	654 B	Netfilter IPv6 connection tracking
+kmod-nf-flow	6.12.108-r1	16.67 KiB	Netfilter flowtable support
+kmod-nf-ipt	6.12.108-r1	21.08 KiB	Iptables core

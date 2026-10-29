@@ -3,36 +3,30 @@ name: Build ImmortalWrt for Redmi AX6000
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'ImmortalWrt branch/tag'
+      source_ref:
+        description: "ImmortalWrt commit or tag"
         required: true
-        default: 'openwrt-25.12'
-
-  repository_dispatch:
-    types: [source-code-update]
+        default: "313718c25f206cdeee399bdc6c002b7388c9a513"
+      include_router_config:
+        description: "Restore the encrypted router snapshot"
+        required: true
+        type: boolean
+        default: true
 
 env:
   TZ: Asia/Shanghai
-  DEFAULT_BRANCH: openwrt-25.12
+  DEFAULT_SOURCE_REF: "313718c25f206cdeee399bdc6c002b7388c9a513"
+
+permissions:
+  contents: read
 
 jobs:
-  build:
+  build-stock:
     runs-on: ubuntu-22.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - layout: stock
-            config: .config
-            profile: xiaomi_redmi-router-ax6000-stock
-            artifact: immortalwrt-ax6000-stock
-          - layout: ubootmod
-            config: .config.ubootmod
-            profile: xiaomi_redmi-router-ax6000-ubootmod
-            artifact: immortalwrt-ax6000-ubootmod
+    timeout-minutes: 360
 
     steps:
-      - name: Checkout your config repo
+      - name: Checkout configuration repository
         uses: actions/checkout@v4
         with:
           path: config-repo
@@ -41,7 +35,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: immortalwrt/immortalwrt
-          ref: ${{ github.event.inputs.branch || github.event.client_payload.branch || env.DEFAULT_BRANCH }}
+          ref: ${{ github.event.inputs.source_ref || env.DEFAULT_SOURCE_REF }}
           fetch-depth: 0
           path: immortalwrt
 
@@ -54,22 +48,19 @@ jobs:
             libssl-dev python3-dev python3-distutils python3-setuptools \
             rsync unzip zlib1g-dev file wget curl
 
-      - name: Add custom package feeds
+      - name: Pin feeds to the captured firmware build
         working-directory: immortalwrt
         run: |
-          # nikki / momo: proxy plugins
-          echo 'src-git nikki https://github.com/nikkinikki-org/OpenWrt-nikki.git;main' >> feeds.conf.default
-          echo 'src-git momo https://github.com/nikkinikki-org/OpenWrt-momo.git;main' >> feeds.conf.default
-
-          # mosdns v5: the LuCI app and mosdns source
-          echo 'src-git mosdns https://github.com/sbwml/luci-app-mosdns.git;v5' >> feeds.conf.default
-
-          # kenzo / small: package collections
-          echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages.git;master' >> feeds.conf.default
-          echo 'src-git small https://github.com/kenzok8/small.git;master' >> feeds.conf.default
-
-          # helloworld: SSR Plus+
-          echo 'src-git helloworld https://github.com/fw876/helloworld.git;main' >> feeds.conf.default
+          cat > feeds.conf.default <<'EOF'
+          src-git packages https://github.com/immortalwrt/packages.git;8c55f325c98f8ef09906fce123e83314f02470ee
+          src-git luci https://github.com/immortalwrt/luci.git;2858f8d98b270bd3baf30a1d19c6e26df22c3197
+          src-git routing https://github.com/openwrt/routing.git;cc66db23430a923df3fe7941a097c5fd4040087b
+          src-git telephony https://github.com/openwrt/telephony.git;2618106d5846a4a542fdf5809f0d3ed228ce439b
+          src-git video https://github.com/openwrt/video.git;094bf58da6682f895255a35a84349a79dab4bf95
+          src-git momo https://github.com/nikkinikki-org/OpenWrt-momo.git;dc0b315030aff15687829e3c411421299d32298a
+          src-git mosdns https://github.com/sbwml/luci-app-mosdns.git;fae49a28404a7cee309b47fccd920c3da7e81c2e
+          src-git small https://github.com/kenzok8/small.git;3a03f66d706885bf4a35d9ac04c08b2d51593f55
+          EOF
 
       - name: Update and install feeds
         working-directory: immortalwrt
@@ -77,21 +68,70 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-          # v5 mosdns feed must win over the duplicate copy in small
-          ./scripts/feeds uninstall mosdns luci-app-mosdns 2>/dev/null || true
-          ./scripts/feeds install -f -p mosdns mosdns luci-app-mosdns
-
-      - name: Copy ${{ matrix.layout }} config and expand
+      - name: Apply captured package selection
         working-directory: immortalwrt
         run: |
-          cp "$GITHUB_WORKSPACE/config-repo/${{ matrix.config }}" .config
+          cp "$GITHUB_WORKSPACE/config-repo/.config" .config
+
+          while IFS= read -r package_name; do
+            [ -z "$package_name" ] && continue
+            case "$package_name" in \#*) continue ;; esac
+            policy_name="${package_name//./\\\\.}"
+            sed -i "/^CONFIG_PACKAGE_${policy_name}=/d" .config
+            printf 'CONFIG_PACKAGE_%s=y\n' "$package_name" >> .config
+          done < "$GITHUB_WORKSPACE/config-repo/build-packages.txt"
+
           make defconfig
 
-      - name: Verify selected profile
+      - name: Verify profile and required packages
         working-directory: immortalwrt
         run: |
-          grep -E 'CONFIG_TARGET_(BOARD|SUBTARGET|PROFILE)|DEVICE_xiaomi_redmi-router-ax6000' .config || true
-          grep -q "CONFIG_TARGET_mediatek_filogic_DEVICE_${{ matrix.profile }}=y" .config
+          set -eu
+          grep -qx 'CONFIG_TARGET_mediatek_filogic_DEVICE_xiaomi_redmi-router-ax6000-stock=y' .config
+
+          for package_name in \
+            3proxy bridger dnsmasq-full luci-app-momo luci-app-statistics \
+            mihomo momo mosdns sing-box; do
+            grep -qx "CONFIG_PACKAGE_${package_name}=y" .config || {
+              echo "Required package was not selected: ${package_name}"
+              exit 1
+            }
+          done
+
+      - name: Install public file overlay
+        working-directory: immortalwrt
+        run: |
+          mkdir -p files
+          cp -a "$GITHUB_WORKSPACE/config-repo/files/." files/
+
+      - name: Restore encrypted router snapshot
+        if: ${{ github.event.inputs.include_router_config != 'false' }}
+        working-directory: immortalwrt
+        env:
+          ROUTER_CONFIG_ARCHIVE_PASSWORD: ${{ secrets.ROUTER_CONFIG_ARCHIVE_PASSWORD }}
+        run: |
+          set -eu
+          if [ -z "${ROUTER_CONFIG_ARCHIVE_PASSWORD:-}" ]; then
+            echo "ROUTER_CONFIG_ARCHIVE_PASSWORD is not configured."
+            echo "Add the password as a repository Actions secret, or run with include_router_config=false."
+            exit 1
+          fi
+
+          archive="$GITHUB_WORKSPACE/config-repo/configs/router-backup-2026-10-29.tar.enc"
+          plain_archive="$RUNNER_TEMP/router-backup.tar"
+
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 \
+            -in "$archive" \
+            -out "$plain_archive" \
+            -pass env:ROUTER_CONFIG_ARCHIVE_PASSWORD
+
+          if tar -tf "$plain_archive" | grep -Ev '^etc/'; then
+            echo "Unexpected path in router snapshot"
+            exit 1
+          fi
+
+          tar -xf "$plain_archive" -C files
+          rm -f "$plain_archive"
 
       - name: Download package sources
         working-directory: immortalwrt
@@ -99,47 +139,48 @@ jobs:
           make download -j"$(nproc)"
           find dl -size -1024c -exec ls -l {} \;
 
-      - name: Compile firmware
+      - name: Compile stock firmware
         working-directory: immortalwrt
         run: make -j"$(nproc)" V=s
 
-      - name: Verify ${{ matrix.layout }} artifacts
+      - name: Verify artifacts and package manifest
         working-directory: immortalwrt
         run: |
-          set -e
-          if [ "${{ matrix.layout }}" = "ubootmod" ]; then
-            ls -lh bin/targets/mediatek/filogic/*ax6000-ubootmod*
-            for f in \
-              bin/targets/mediatek/filogic/*ax6000-ubootmod-preloader.bin \
-              bin/targets/mediatek/filogic/*ax6000-ubootmod-bl31-uboot.fip \
-              bin/targets/mediatek/filogic/*ax6000-ubootmod-initramfs-factory.ubi \
-              bin/targets/mediatek/filogic/*ax6000-ubootmod-initramfs-recovery.itb \
-              bin/targets/mediatek/filogic/*ax6000-ubootmod-squashfs-sysupgrade.itb; do
-              ls $f >/dev/null 2>&1 || { echo "Missing ubootmod artifact: $f"; exit 1; }
-            done
-          else
-            ls -lh bin/targets/mediatek/filogic/*ax6000-stock*
-            for f in \
-              bin/targets/mediatek/filogic/*ax6000-stock-initramfs-factory.ubi \
-              bin/targets/mediatek/filogic/*ax6000-stock-squashfs-sysupgrade.bin; do
-              ls $f >/dev/null 2>&1 || { echo "Missing stock artifact: $f"; exit 1; }
-            done
-          fi
+          set -eu
+          for artifact_file in \
+            bin/targets/mediatek/filogic/*ax6000-stock-initramfs-factory.ubi \
+            bin/targets/mediatek/filogic/*ax6000-stock-squashfs-sysupgrade.bin; do
+            ls $artifact_file >/dev/null 2>&1 || {
+              echo "Missing artifact: $artifact_file"
+              exit 1
+            }
+          done
 
-      - name: Upload ${{ matrix.layout }} firmware
+          test -n "$(find bin/targets/mediatek/filogic -maxdepth 1 -name '*.manifest' -print -quit)"
+
+          for package_name in 3proxy bridger dnsmasq-full luci-app-momo luci-app-statistics mihomo momo mosdns sing-box; do
+            grep -Rqs -E "^${package_name}([[:space:]]|$)" bin/targets/mediatek/filogic/*.manifest || {
+              echo "Package missing from firmware manifest: ${package_name}"
+              exit 1
+            }
+          done
+
+          cp "$GITHUB_WORKSPACE/config-repo/manifests/installed-packages.tsv" \
+            bin/targets/mediatek/filogic/ROUTER-SNAPSHOT-installed-packages.tsv
+          cp "$GITHUB_WORKSPACE/config-repo/manifests/device-snapshot.md" \
+            bin/targets/mediatek/filogic/ROUTER-SNAPSHOT-device-info.md
+          cp .config bin/targets/mediatek/filogic/ROUTER-SNAPSHOT.config
+
+          cd bin/targets/mediatek/filogic
+          sha256sum \
+            *ax6000-stock*.bin \
+            *ax6000-stock*.ubi \
+            *.manifest \
+            ROUTER-SNAPSHOT-* > SHA256SUMS
+
+      - name: Upload stock firmware
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact }}
-          path: |
-            immortalwrt/bin/targets/mediatek/filogic/
-            !immortalwrt/bin/targets/mediatek/filogic/packages/
-
-      - name: Upload ${{ matrix.layout }} package repository
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.artifact }}-packages
-          path: |
-            immortalwrt/bin/targets/mediatek/filogic/packages/
-            immortalwrt/bin/packages/aarch64_cortex-a53/
-          if-no-files-found: warn
-          retention-days: 7
+          name: immortalwrt-ax6000-stock-current-router
+          path: immortalwrt/bin/targets/mediatek/filogic/
+          if-no-files-found: error
