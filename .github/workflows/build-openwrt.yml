@@ -57,6 +57,7 @@ jobs:
           src-git routing https://github.com/openwrt/routing.git^cc66db23430a923df3fe7941a097c5fd4040087b
           src-git telephony https://github.com/openwrt/telephony.git^2618106d5846a4a542fdf5809f0d3ed228ce439b
           src-git video https://github.com/openwrt/video.git^094bf58da6682f895255a35a84349a79dab4bf95
+          src-git extras https://github.com/immortalwrt/packages.git^f3355492bd38b6e40afbb1cad9307c43bf4d843e
           src-git momo https://github.com/nikkinikki-org/OpenWrt-momo.git^dc0b315030aff15687829e3c411421299d32298a
           src-git mosdns https://github.com/sbwml/luci-app-mosdns.git^fae49a28404a7cee309b47fccd920c3da7e81c2e
           src-git small https://github.com/kenzok8/small.git^3a03f66d706885bf4a35d9ac04c08b2d51593f55
@@ -66,7 +67,12 @@ jobs:
         working-directory: immortalwrt
         run: |
           ./scripts/feeds update -a
-          ./scripts/feeds install -a
+          ./scripts/feeds install -a -p packages
+          ./scripts/feeds install -a -p luci
+          ./scripts/feeds install -p extras 3proxy
+          ./scripts/feeds install -p momo luci-app-momo momo
+          ./scripts/feeds install -p mosdns mosdns
+          ./scripts/feeds install -p small mihomo
 
       - name: Apply captured package selection
         working-directory: immortalwrt

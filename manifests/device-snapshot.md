@@ -71,6 +71,7 @@ redesigned.
 | ImmortalWrt | `313718c25f206cdeee399bdc6c002b7388c9a513` |
 | ImmortalWrt packages | `8c55f325c98f8ef09906fce123e83314f02470ee` |
 | ImmortalWrt LuCI | `2858f8d98b270bd3baf30a1d19c6e26df22c3197` |
+| 3proxy extra package feed | `f3355492bd38b6e40afbb1cad9307c43bf4d843e` |
 | Momo | `v1.2.1`, `dc0b315030aff15687829e3c411421299d32298a` |
 | mosdns | `v5.3.4-r14`, `fae49a28404a7cee309b47fccd920c3da7e81c2e` |
 | mihomo / small feed | `1.19.32`, `3a03f66d706885bf4a35d9ac04c08b2d51593f55` |
