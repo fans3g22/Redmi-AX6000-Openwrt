@@ -52,14 +52,14 @@ jobs:
         working-directory: immortalwrt
         run: |
           cat > feeds.conf.default <<'EOF'
-          src-git packages https://github.com/immortalwrt/packages.git;8c55f325c98f8ef09906fce123e83314f02470ee
-          src-git luci https://github.com/immortalwrt/luci.git;2858f8d98b270bd3baf30a1d19c6e26df22c3197
-          src-git routing https://github.com/openwrt/routing.git;cc66db23430a923df3fe7941a097c5fd4040087b
-          src-git telephony https://github.com/openwrt/telephony.git;2618106d5846a4a542fdf5809f0d3ed228ce439b
-          src-git video https://github.com/openwrt/video.git;094bf58da6682f895255a35a84349a79dab4bf95
-          src-git momo https://github.com/nikkinikki-org/OpenWrt-momo.git;dc0b315030aff15687829e3c411421299d32298a
-          src-git mosdns https://github.com/sbwml/luci-app-mosdns.git;fae49a28404a7cee309b47fccd920c3da7e81c2e
-          src-git small https://github.com/kenzok8/small.git;3a03f66d706885bf4a35d9ac04c08b2d51593f55
+          src-git packages https://github.com/immortalwrt/packages.git^8c55f325c98f8ef09906fce123e83314f02470ee
+          src-git luci https://github.com/immortalwrt/luci.git^2858f8d98b270bd3baf30a1d19c6e26df22c3197
+          src-git routing https://github.com/openwrt/routing.git^cc66db23430a923df3fe7941a097c5fd4040087b
+          src-git telephony https://github.com/openwrt/telephony.git^2618106d5846a4a542fdf5809f0d3ed228ce439b
+          src-git video https://github.com/openwrt/video.git^094bf58da6682f895255a35a84349a79dab4bf95
+          src-git momo https://github.com/nikkinikki-org/OpenWrt-momo.git^dc0b315030aff15687829e3c411421299d32298a
+          src-git mosdns https://github.com/sbwml/luci-app-mosdns.git^fae49a28404a7cee309b47fccd920c3da7e81c2e
+          src-git small https://github.com/kenzok8/small.git^3a03f66d706885bf4a35d9ac04c08b2d51593f55
           EOF
 
       - name: Update and install feeds
