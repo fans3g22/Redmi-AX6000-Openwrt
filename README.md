@@ -37,11 +37,12 @@
 
 路由器完整备份经过 AES-256/PBKDF2 加密后保存在：
 
-`configs/router-backup-2026-10-29.tar.enc`
+`configs/router-backup-2026-10-29.tar.gz.enc`
 
-其中包含 Wi-Fi 密码、代理订阅/节点、root 密码哈希、SSH 主机密钥和其他
-个人凭据，因此不能删除加密或直接提交明文备份。构建时仅在 GitHub runner 的
-临时目录中解密，并覆盖到 OpenWrt 构建的 `files/` 目录。
+其中是路由器当前的整个 `/etc` 配置树，包含 Wi-Fi 密码、Momo 订阅/节点、
+mosdns 配置、防火墙脚本、root 密码哈希、SSH 主机密钥和其他个人凭据。因此
+不能删除加密或直接提交明文备份。构建时仅在 GitHub runner 的临时目录中
+解密，排除缓存与临时文件后覆盖到 OpenWrt 构建的 `files/` 目录。
 
 重新导出路由器备份后，可运行：
 
@@ -51,8 +52,8 @@ ROUTER_CONFIG_ARCHIVE_PASSWORD='secure-password' \
 ./scripts/encrypt-router-backup.sh
 ```
 
-[`files/`](files/) 中只保存可公开的辅助脚本。DMZ、防火墙、无线和代理设置
-来自加密快照。
+[`files/`](files/) 中只保存可公开的辅助脚本。路由器的 DMZ、防火墙、无线、
+Momo/mosdns 和计划任务设置来自加密快照。
 
 ## 安全提示
 

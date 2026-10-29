@@ -12,12 +12,11 @@ if [ -z "${ROUTER_CONFIG_ARCHIVE_PASSWORD:-}" ]; then
 fi
 
 repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
-output="$repo_root/configs/router-backup-$(date +%F).tar.enc"
+output="$repo_root/configs/router-backup-$(date +%F).tar.gz.enc"
 
 mkdir -p "$repo_root/configs"
 umask 077
-openssl enc -aes-256-cbc -salt -pbkdf2 -iter 600000 \
-  -in "$ROUTER_BACKUP" \
+gzip -c "$ROUTER_BACKUP" | openssl enc -aes-256-cbc -salt -pbkdf2 -iter 600000 \
   -out "$output" \
   -pass env:ROUTER_CONFIG_ARCHIVE_PASSWORD
 

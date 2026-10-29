@@ -64,6 +64,11 @@ redesigned.
 - Scheduled jobs restart Momo at 03:00 daily, clear its logs every 5 minutes,
   and reboot the router Wednesdays at 05:00 after `sync`.
 
+The encrypted snapshot is a gzip archive of the complete live `/etc` tree
+(442 entries), including the active mosdns configuration and Momo panel assets.
+Build-time extraction excludes caches, temporary password backups and the
+urandom seed.
+
 ## Build source pins
 
 | Source | Ref |

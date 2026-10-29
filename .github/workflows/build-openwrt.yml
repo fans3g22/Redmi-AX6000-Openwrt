@@ -123,20 +123,26 @@ jobs:
             exit 1
           fi
 
-          archive="$GITHUB_WORKSPACE/config-repo/configs/router-backup-2026-10-29.tar.enc"
-          plain_archive="$RUNNER_TEMP/router-backup.tar"
+          archive="$GITHUB_WORKSPACE/config-repo/configs/router-backup-2026-10-29.tar.gz.enc"
+          plain_archive="$RUNNER_TEMP/router-backup.tar.gz"
 
           openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 \
             -in "$archive" \
             -out "$plain_archive" \
             -pass env:ROUTER_CONFIG_ARCHIVE_PASSWORD
 
-          if tar -tf "$plain_archive" | grep -Ev '^etc/'; then
+          if tar -tzf "$plain_archive" | grep -Ev '^etc/'; then
             echo "Unexpected path in router snapshot"
             exit 1
           fi
 
-          tar -xf "$plain_archive" -C files
+          tar -xzf "$plain_archive" -C files \
+            --exclude='etc/momo/run/cache.db' \
+            --exclude='etc/urandom.seed' \
+            --exclude='etc/passwd-' \
+            --exclude='etc/shadow-' \
+            --exclude='etc/mosdns/config.yaml.bak-*' \
+            --exclude='etc/mosdns/config.yaml.before-apply'
           rm -f "$plain_archive"
 
       - name: Download package sources
