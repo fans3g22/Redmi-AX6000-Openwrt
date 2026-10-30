@@ -123,7 +123,13 @@ jobs:
             exit 1
           fi
 
-          archive="$GITHUB_WORKSPACE/config-repo/configs/router-backup-2026-10-29.tar.gz.enc"
+          archive=$(find "$GITHUB_WORKSPACE/config-repo/configs" \
+            -maxdepth 1 -type f -name 'router-backup-*.tar.gz.enc' -print \
+            | LC_ALL=C sort | tail -n 1)
+          if [ -z "$archive" ]; then
+            echo "No encrypted router backup was found."
+            exit 1
+          fi
           plain_archive="$RUNNER_TEMP/router-backup.tar.gz"
 
           openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 \
