@@ -5,7 +5,7 @@ echo 'src-git mosdns https://github.com/sbwml/luci-app-mosdns' >> feeds.conf.def
 echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >> feeds.conf.default
 echo 'src-git small https://github.com/kenzok8/small' >> feeds.conf.default
 echo 'src-git helloworld https://github.com/fw876/helloworld' >> feeds.conf.default
-echo 'src-git nikki https://github.com/nikkinikki-org/OpenWrt-nikki' >> feeds.conf.default
+echo 'src-git honk https://github.com/kenzok8/openwrt-honk' >> feeds.conf.default
 
 # 2. 统一更新源并安装
 ./scripts/feeds update -a

@@ -7,14 +7,14 @@
 # official ImmortalWrt feed: OpenWrt and ImmortalWrt packages are not
 # interchangeable.
 if [ -f /etc/apk/repositories.d/distfeeds.list ]; then
-    sed -i -e '/kenzo/d' -e '/mosdns/d' -e '/small/d' \
+    sed -i -e '/kenzo/d' -e '/mosdns/d' -e '/small/d' -e '/honk/d' \
         -e '/nikki/d' -e '/momo/d' -e '/helloworld/d' -e '/video/d' \
         /etc/apk/repositories.d/distfeeds.list
     # If you host your own ABI-compatible package index, add it here:
     # echo 'https://example.com/openwrt/packages/aarch64_cortex-a53/packages.adb' \
     #     >> /etc/apk/repositories.d/customfeeds.list
 elif [ -f /etc/opkg/distfeeds.conf ]; then
-    sed -i -e '/kenzo/d' -e '/mosdns/d' -e '/small/d' \
+    sed -i -e '/kenzo/d' -e '/mosdns/d' -e '/small/d' -e '/honk/d' \
         -e '/nikki/d' -e '/momo/d' -e '/helloworld/d' -e '/video/d' \
         /etc/opkg/distfeeds.conf
 fi

@@ -39,7 +39,7 @@
 
 `configs/router-backup-2026-10-29.tar.gz.enc`
 
-其中是路由器当前的整个 `/etc` 配置树，包含 Wi-Fi 密码、Momo 订阅/节点、
+其中是路由器当前的整个 `/etc` 配置树，包含 Wi-Fi 密码、代理配置、
 mosdns 配置、防火墙脚本、root 密码哈希、SSH 主机密钥和其他个人凭据。因此
 不能删除加密或直接提交明文备份。构建时仅在 GitHub runner 的临时目录中
 解密，排除缓存与临时文件后覆盖到 OpenWrt 构建的 `files/` 目录。
@@ -59,7 +59,7 @@ git push origin main
 ```
 
 [`files/`](files/) 中只保存可公开的辅助脚本。路由器的 DMZ、防火墙、无线、
-Momo/mosdns 和计划任务设置来自加密快照。
+代理/mosdns 和计划任务设置来自加密快照。
 
 工作流会自动选择 `configs/` 中日期最新的
 `router-backup-*.tar.gz.enc`，不需要再修改 YAML 文件名。

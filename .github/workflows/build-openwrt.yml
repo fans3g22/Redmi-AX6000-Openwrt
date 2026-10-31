@@ -58,7 +58,7 @@ jobs:
           src-git telephony https://github.com/openwrt/telephony.git^2618106d5846a4a542fdf5809f0d3ed228ce439b
           src-git video https://github.com/openwrt/video.git^094bf58da6682f895255a35a84349a79dab4bf95
           src-git extras https://github.com/immortalwrt/packages.git^f3355492bd38b6e40afbb1cad9307c43bf4d843e
-          src-git momo https://github.com/nikkinikki-org/OpenWrt-momo.git^dc0b315030aff15687829e3c411421299d32298a
+          src-git honk https://github.com/kenzok8/openwrt-honk.git
           src-git mosdns https://github.com/sbwml/luci-app-mosdns.git^fae49a28404a7cee309b47fccd920c3da7e81c2e
           src-git small https://github.com/kenzok8/small.git^3a03f66d706885bf4a35d9ac04c08b2d51593f55
           EOF
@@ -70,7 +70,7 @@ jobs:
           ./scripts/feeds install -a -p packages
           ./scripts/feeds install -a -p luci
           ./scripts/feeds install -p extras 3proxy
-          ./scripts/feeds install -p momo luci-app-momo momo
+          ./scripts/feeds install -p honk luci-app-honk honk
           ./scripts/feeds install -p mosdns mosdns
           ./scripts/feeds install -p small mihomo
 
@@ -96,8 +96,8 @@ jobs:
           grep -qx 'CONFIG_TARGET_mediatek_filogic_DEVICE_xiaomi_redmi-router-ax6000-stock=y' .config
 
           for package_name in \
-            3proxy bridger dnsmasq-full luci-app-momo luci-app-statistics \
-            mihomo momo mosdns sing-box; do
+            3proxy bridger dnsmasq-full luci-app-honk luci-app-statistics \
+            mihomo honk mosdns sing-box; do
             grep -qx "CONFIG_PACKAGE_${package_name}=y" .config || {
               echo "Required package was not selected: ${package_name}"
               exit 1
@@ -143,7 +143,12 @@ jobs:
           fi
 
           tar -xzf "$plain_archive" -C files \
-            --exclude='etc/momo/run/cache.db' \
+            --exclude='etc/momo*' \
+            --exclude='etc/config/momo*' \
+            --exclude='etc/init.d/momo*' \
+            --exclude='etc/nikki*' \
+            --exclude='etc/config/nikki*' \
+            --exclude='etc/init.d/nikki*' \
             --exclude='etc/urandom.seed' \
             --exclude='etc/passwd-' \
             --exclude='etc/shadow-' \
@@ -176,7 +181,7 @@ jobs:
 
           test -n "$(find bin/targets/mediatek/filogic -maxdepth 1 -name '*.manifest' -print -quit)"
 
-          for package_name in 3proxy bridger dnsmasq-full luci-app-momo luci-app-statistics mihomo momo mosdns sing-box; do
+          for package_name in 3proxy bridger dnsmasq-full luci-app-honk luci-app-statistics mihomo honk mosdns sing-box; do
             grep -Rqs -E "^${package_name}([[:space:]]|$)" bin/targets/mediatek/filogic/*.manifest || {
               echo "Package missing from firmware manifest: ${package_name}"
               exit 1
