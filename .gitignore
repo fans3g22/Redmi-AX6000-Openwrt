@@ -1,0 +1,3 @@
+# Ignore plaintext router backup archive to prevent credential leaks
+scripts/*.tar.gz
+*.tar.gz
