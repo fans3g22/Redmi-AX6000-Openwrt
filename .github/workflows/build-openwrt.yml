@@ -1,0 +1,200 @@
+#
+# Description: Build ImmortalWrt 25.12 for Redmi AX6000 with Honk + MosDNS + LuCI
+# Modernized & Robust OpenWrt Build Workflow
+#
+
+name: Build OpenWrt
+
+on:
+  repository_dispatch:
+    types: [source-code-update, custom-build]
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions (tmate debugging)'
+        required: false
+        default: 'false'
+        type: boolean
+      upload_release:
+        description: 'Upload firmware to GitHub Releases'
+        required: false
+        default: true
+        type: boolean
+      upload_artifact:
+        description: 'Upload firmware to GitHub Artifacts'
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+  actions: write
+
+env:
+  REPO_URL: https://github.com/immortalwrt/immortalwrt
+  REPO_BRANCH: openwrt-25.12
+  FEEDS_CONF: feeds.conf.default
+  CONFIG_FILE: .config
+  DIY_P1_SH: diy-part1.sh
+  DIY_P2_SH: diy-part2.sh
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: ${{ github.event.inputs.upload_artifact != 'false' }}
+  UPLOAD_RELEASE: ${{ github.event.inputs.upload_release != 'false' }}
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Free disk space & Init build environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache
+        sudo docker image prune -a -f 2>/dev/null || true
+        
+        # 创建 6GB Swap 虚拟内存防止 Go / eBPF 多线程编译 OOM
+        sudo fallocate -l 6G /swapfile 2>/dev/null || sudo dd if=/dev/zero of=/swapfile bs=1M count=6144
+        sudo chmod 600 /swapfile
+        sudo mkswap /swapfile
+        sudo swapon /swapfile
+        
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install -y \
+          build-essential clang flex bison g++ gawk gcc-multilib g++-multilib \
+          gettext git libncurses-dev libssl-dev python3-distutils python3-setuptools \
+          rsync unzip zlib1g-dev file wget curl libfuse-dev
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+
+    - name: Clone source code
+      working-directory: /workdir
+      run: |
+        df -hT $PWD
+        git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        cd openwrt
+        echo "UPSTREAM_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+    - name: Cache package download (dl)
+      uses: actions/cache@v4
+      with:
+        path: openwrt/dl
+        key: ${{ runner.os }}-openwrt-dl-${{ hashFiles('openwrt/feeds.conf.default', 'diy-part1.sh') }}
+        restore-keys: |
+          ${{ runner.os }}-openwrt-dl-
+
+    - name: Load custom feeds
+      run: |
+        [ -e $FEEDS_CONF ] && cp $FEEDS_CONF openwrt/feeds.conf.default
+        chmod +x $DIY_P1_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P1_SH
+
+    - name: Update feeds
+      run: cd openwrt && ./scripts/feeds update -a
+
+    - name: Install feeds
+      run: cd openwrt && ./scripts/feeds install -a
+
+    - name: Load custom configuration
+      run: |
+        [ -e files ] && cp -r files openwrt/files
+        [ -e $CONFIG_FILE ] && cp $CONFIG_FILE openwrt/.config
+        chmod +x $DIY_P2_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P2_SH
+
+    - name: SSH connection to Actions (tmate)
+      uses: mxschmitt/action-tmate@v3
+      if: (github.event.inputs.ssh == 'true') || contains(github.event.action, 'ssh')
+      timeout-minutes: 30
+
+    - name: Download package
+      id: package
+      run: |
+        cd openwrt
+        make defconfig
+        make download -j8
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+
+    - name: Compile the firmware
+      id: compile
+      run: |
+        cd openwrt
+        echo -e "$(nproc) thread compile"
+        make -j$(nproc) || make -j1 || make -j1 V=s
+        echo "status=success" >> $GITHUB_OUTPUT
+        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+
+    - name: Check space usage
+      if: (!cancelled())
+      run: df -hT
+
+    - name: Organize files
+      id: organize
+      if: steps.compile.outputs.status == 'success' && !cancelled()
+      run: |
+        cd openwrt/bin/targets/*/*
+        rm -rf packages
+        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+        echo "status=success" >> $GITHUB_OUTPUT
+
+    - name: Generate release metadata & checksums
+      id: tag
+      if: env.UPLOAD_RELEASE == 'true' && steps.compile.outputs.status == 'success' && !cancelled()
+      run: |
+        RELEASE_TAG="v$(date +"%Y.%m.%d-%H%M")"
+        echo "release_tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
+        
+        cd ${{ env.FIRMWARE }}
+        sha256sum * > sha256sums.txt 2>/dev/null || true
+        
+        cat <<EOF > $GITHUB_WORKSPACE/release.txt
+        ### 🚀 Redmi AX6000 ImmortalWrt 25.12 固件发布
+
+        - **设备型号**: 小米 / 红米 Redmi AX6000 (MT7986A Filogic 原厂 Stock 布局)
+        - **上游底包**: [ImmortalWrt 25.12](https://github.com/immortalwrt/immortalwrt/tree/openwrt-25.12) (\`${{ env.UPSTREAM_COMMIT }}\`)
+        - **编译时间**: $(date +"%Y-%m-%d %H:%M:%S") (CST)
+        - **预装核心组件**:
+          - ⚡ **Honk**: 基于 eBPF 的高性能透明代理 (\`luci-app-honk\`)
+          - 🧭 **MosDNS v5**: 智能 DNS 分流与防污染 (\`luci-app-mosdns\`, \`v2ray-geodata\`)
+          - 📶 **802.11k/v/r 漫游优化** 与 \`usteer\` 弱信号剔除 (\`luci-app-usteer\`)
+          - 🚀 **全硬件流控**: Flow Offloading (HW NAT)
+
+        #### 校验码 (SHA256)
+        \`\`\`text
+        $(cat sha256sums.txt)
+        \`\`\`
+        EOF
+        echo "status=success" >> $GITHUB_OUTPUT
+
+    - name: Upload firmware directory to Artifacts
+      uses: actions/upload-artifact@v4
+      if: env.UPLOAD_FIRMWARE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
+      with:
+        name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: ${{ env.FIRMWARE }}
+        retention-days: 7
+
+    - name: Upload firmware to GitHub Release
+      uses: softprops/action-gh-release@v2
+      if: steps.tag.outputs.status == 'success' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        name: Redmi AX6000 ImmortalWrt 25.12 (${{ steps.tag.outputs.release_tag }})
+        body_path: release.txt
+        files: |
+          ${{ env.FIRMWARE }}/*
