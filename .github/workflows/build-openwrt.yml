@@ -89,9 +89,12 @@ jobs:
       uses: actions/cache@v4
       with:
         path: openwrt/dl
-        key: ${{ runner.os }}-openwrt-dl-${{ hashFiles('openwrt/feeds.conf.default', 'diy-part1.sh') }}
+        key: ${{ runner.os }}-openwrt-dl-v2-${{ hashFiles('openwrt/feeds.conf.default', 'diy-part1.sh') }}
         restore-keys: |
-          ${{ runner.os }}-openwrt-dl-
+          ${{ runner.os }}-openwrt-dl-v2-
+
+    - name: Remove broken Go module cache
+      run: rm -rf openwrt/dl/go-mod-cache
 
     - name: Load custom feeds
       run: |
@@ -223,3 +226,9 @@ jobs:
         body_path: release.txt
         files: |
           ${{ env.FIRMWARE }}/*
+
+    # Go module sources can become incomplete after being packed into the
+    # broader OpenWrt download cache. Keep them out of future cache saves.
+    - name: Keep Go modules out of download cache
+      if: success()
+      run: rm -rf openwrt/dl/go-mod-cache
