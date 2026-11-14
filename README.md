@@ -8,12 +8,13 @@
 
 ## 包含的核心特性与基础包
 
-1. **Honk (基于 eBPF 的高性能透明代理)**
+1. **Honk (基于 eBPF 的高性能透明代理与 DNS 服务)**
    - 核心与管理界面：`honk` + `luci-app-honk`
    - 底层内核驱动与基础支持包：`kmod-tun`、`kmod-inet-diag`、`kmod-netlink-diag`、`kmod-nft-tproxy`、`kmod-nft-queue`、`kmod-veth`、`kmod-sched-core`、`kmod-sched-bpf`、`kmod-tcp-bbr`、`ip-full`、`ca-bundle`、`ca-certificates`、`curl`
-2. **MosDNS v5 (智能 DNS 防污染与分流)**
-   - 核心与管理界面：`mosdns` + `luci-app-mosdns`
    - 规则数据：最新 `v2ray-geodata` (`geoip.dat` / `geosite.dat`)
+2. **UPnP 与 SQM 体验优化**
+   - 端口映射：`luci-app-upnp` (支持主机联机与 P2P 自动映射)
+   - 队列管理：`luci-app-sqm` (CAKE 智能抗 Bufferbloat，下载满速打游戏不跳 ping)
 3. **无线 802.11k/v/r 漫游与弱信号剔除**
    - 完整版无线组件：`wpad-wolfssl`（支持 802.11k/v/r 快速漫游与 WPA3）
    - 智能弱信号踢除与漫游引导：`usteer` + `luci-app-usteer`

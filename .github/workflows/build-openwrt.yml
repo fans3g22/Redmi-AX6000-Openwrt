@@ -199,8 +199,9 @@ jobs:
         - **上游底包**: [ImmortalWrt 25.12](https://github.com/immortalwrt/immortalwrt/tree/openwrt-25.12) (\`${{ env.UPSTREAM_COMMIT }}\`)
         - **编译时间**: $(date +"%Y-%m-%d %H:%M:%S") (CST)
         - **预装核心组件**:
-          - ⚡ **Honk**: 基于 eBPF 的高性能透明代理 (\`luci-app-honk\`)
-          - 🧭 **MosDNS v5**: 智能 DNS 分流与防污染 (\`luci-app-mosdns\`, \`v2ray-geodata\`)
+          - ⚡ **Honk**: 基于 eBPF 的高性能透明代理与智能 DNS
+          - 🔀 **UPnP**: 自动端口映射 (\`luci-app-upnp\`)
+          - ⏱️ **SQM**: 智能队列管理 / CAKE 抗缓冲膨胀 (\`luci-app-sqm\`)
           - 📶 **802.11k/v/r 漫游优化** 与 \`usteer\` 弱信号剔除 (\`luci-app-usteer\`)
           - 🚀 **全硬件流控**: Flow Offloading (HW NAT)
 

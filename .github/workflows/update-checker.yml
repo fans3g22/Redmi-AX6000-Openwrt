@@ -30,32 +30,28 @@ jobs:
 
         UPSTREAM_URL="https://github.com/immortalwrt/immortalwrt"
         HONK_URL="https://github.com/kenzok8/openwrt-honk"
-        MOSDNS_URL="https://github.com/sbwml/luci-app-mosdns"
 
         echo "🔍 开始检测上游及核心插件最新版本..."
 
-        # 2. 秒级获取三个核心源的最新 Commit Hash
+        # 2. 秒级获取核心源的最新 Commit Hash
         UPSTREAM_HASH=$(git ls-remote "$UPSTREAM_URL" "refs/heads/$UPSTREAM_BRANCH" | awk '{print $1}')
         # 若指定分支未取到则回退至 HEAD
         [ -z "$UPSTREAM_HASH" ] && UPSTREAM_HASH=$(git ls-remote "$UPSTREAM_URL" HEAD | awk '{print $1}')
 
         HONK_HASH=$(git ls-remote "$HONK_URL" HEAD | awk '{print $1}')
-        MOSDNS_HASH=$(git ls-remote "$MOSDNS_URL" "refs/heads/v5" | awk '{print $1}')
-        [ -z "$MOSDNS_HASH" ] && MOSDNS_HASH=$(git ls-remote "$MOSDNS_URL" HEAD | awk '{print $1}')
 
         echo "---------------------------------------------------------"
         echo "🚀 Honk (openwrt-honk)      : $HONK_HASH"
-        echo "🧭 MosDNS (luci-app-mosdns)  : $MOSDNS_HASH"
         echo "📦 ImmortalWrt ($UPSTREAM_BRANCH): $UPSTREAM_HASH"
         echo "---------------------------------------------------------"
 
-        if [ -z "$HONK_HASH" ] || [ -z "$MOSDNS_HASH" ] || [ -z "$UPSTREAM_HASH" ]; then
+        if [ -z "$HONK_HASH" ] || [ -z "$UPSTREAM_HASH" ]; then
           echo "❌ 获取某些源的 Commit Hash 失败，请检查网络！"
           exit 1
         fi
 
-        # 3. 生成多源联合指纹：Honk、MosDNS、ImmortalWrt 任何一个更新，指纹均会发生改变
-        COMPOSITE_HASH=$(echo "IMMORTALWRT=${UPSTREAM_HASH};HONK=${HONK_HASH};MOSDNS=${MOSDNS_HASH}" | sha256sum | awk '{print $1}')
+        # 3. 生成多源联合指纹：Honk、ImmortalWrt 任何一个更新，指纹均会发生改变
+        COMPOSITE_HASH=$(echo "IMMORTALWRT=${UPSTREAM_HASH};HONK=${HONK_HASH}" | sha256sum | awk '{print $1}')
         echo "compositeHash=$COMPOSITE_HASH" >> "$GITHUB_OUTPUT"
         echo "🔑 当前联合指纹: $COMPOSITE_HASH"
 

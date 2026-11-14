@@ -4,12 +4,9 @@
 #
 
 # 1. 移除可能冲突的旧包
-find ./ -name luci-app-mosdns -exec rm -rf {} + 2>/dev/null || true
-find ./ -name mosdns -exec rm -rf {} + 2>/dev/null || true
 find ./ -name v2ray-geodata -exec rm -rf {} + 2>/dev/null || true
 
-# 2. 克隆 MosDNS (sbwml v5 稳定版) 与 v2ray-geodata 到 package 目录
-git clone --depth 1 https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+# 2. 克隆 v2ray-geodata 到 package 目录 (供 Honk 等分流规则使用)
 git clone --depth 1 https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 
 # 3. 克隆 Honk 及 LuCI 管理插件到 package 目录
