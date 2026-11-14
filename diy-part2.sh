@@ -27,3 +27,9 @@ for f in package/network/config/firewall4/files/firewall.config package/network/
     sed -i '/config defaults/a \\toption flow_offloading '\''1'\''\n\toption flow_offloading_hw '\''1'\''' "$f"
   fi
 done
+
+# 移除第三方源中残留或不需要的包 (如 clashoo, 3proxy)
+find feeds/ -type d -name "luci-app-clashoo" -exec rm -rf {} + 2>/dev/null || true
+find feeds/ -type d -name "3proxy" -exec rm -rf {} + 2>/dev/null || true
+find package/ -type d -name "luci-app-clashoo" -exec rm -rf {} + 2>/dev/null || true
+find package/ -type d -name "3proxy" -exec rm -rf {} + 2>/dev/null || true
